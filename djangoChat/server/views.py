@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.http import Http404
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError, AuthenticationFailed
@@ -37,5 +38,7 @@ class ServerListViewSet(viewsets.ViewSet):
         if qty:
             self.queryset = self.queryset[: int(qty)]
 
+        # adding member number
+        self.queryset = self.queryset.annotate(member_num=Count("member"))
         serializer = ServerSerializer(self.queryset, many=True)
         return Response(serializer.data)

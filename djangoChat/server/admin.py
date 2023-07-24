@@ -7,12 +7,14 @@ admin.site.register(Category)
 
 @admin.register(Server)
 class ServerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'owner',
-                    'category', 'description']
-    list_editable = ['name']
-    search_fields = ['name']
+    list_display = ["id", "name", "owner", "category", "description"]
+    list_editable = ["name"]
+    search_fields = ["name"]
 
-    list_display_links = None
+    list_filter = ["category", "owner"]
+    list_select_related = ["category"]
+    list_per_page = 18
+    ordering = ['id']
 
     def __str__(self):
-        return self.title
+        return str(self.id)

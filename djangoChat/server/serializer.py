@@ -10,8 +10,14 @@ class ChannelSerializer(serializers.ModelSerializer):
 
 
 class ServerSerializer(serializers.ModelSerializer):
+    member_num = serializers.SerializerMethodField()
     channel_server = ChannelSerializer(many=True)
 
     class Meta:
         model = Server
-        fields = "__all__"
+        exclude = ("member",)
+
+    def get_member_num(self, obj) -> int:
+        if hasattr(obj, "member_num"):
+            return obj.member_num
+        return 0
