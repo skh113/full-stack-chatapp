@@ -5,11 +5,12 @@ from django.db import models
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 
-from .validators import validate_icon_image_size
+from .validators import validate_icon_image_size, validate_image_file_extensions
 
 NAME_MAX_LENGTH = 100
 
 
+# FIXME: whenever a new obj is created instance.id is not set, so the images uploads to None folder.
 def get_channel_banner_upload_path(instance, filename) -> str:
     return f"channel/{instance.id}/channel_banner/{filename}"
 
@@ -68,10 +69,12 @@ class Channel(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="channel_owner")
     topic = models.CharField(max_length=NAME_MAX_LENGTH)
     server = models.ForeignKey(Server, on_delete=models.PROTECT, related_name="channel_server")
-    banner = models.ImageField(upload_to=get_channel_banner_upload_path, null=True, blank=True)
+    banner = models.ImageField(upload_to=get_channel_banner_upload_path, null=True, blank=True,
+                               validators=[validate_image_file_extensions])
     icon = models.ImageField(upload_to=get_channel_icon_upload_path, null=True, blank=True,
-                             validators=[validate_icon_image_size])
+                             validators=[validate_icon_image_size, validate_image_file_extensions])
 
+    # FIXME: needs refactoring
     # delete previous icon if a new one is uploaded
     def save(self, *args, **kwargs) -> None:
         if self.id:
@@ -84,7 +87,7 @@ class Channel(models.Model):
         super(Channel, self).save(*args, **kwargs)
 
     @receiver(models.signals.pre_delete, sender="server.Channel")
-    def on_delete_channel_delete_files(self, sender, instance, **kwargs):
+    def on_delete_channel_delete_files(sender, instance, **kwargs):
         for field in instance._meta.fields:
             if field.name == "icon" or field.name == "banner":
                 file = getattr(instance, field.name)
