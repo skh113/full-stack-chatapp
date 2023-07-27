@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import { createTheme, responsiveFontSizes } from "@mui/material";
 
 declare module "@mui/material/styles" {
   // extending theme module of material ui
@@ -15,7 +15,7 @@ declare module "@mui/material/styles" {
 }
 
 const createMuiTheme = () => {
-  const theme = createTheme({
+  let theme = createTheme({
     typography: {
       fontFamily: [
         "REM",
@@ -46,6 +46,7 @@ const createMuiTheme = () => {
     },
   });
 
+  theme = responsiveFontSizes(theme);
   return theme;
 };
 
