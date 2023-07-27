@@ -1,19 +1,28 @@
 import {
   AppBar,
   Box,
-  Drawer,
   IconButton,
   Link,
+  SwipeableDrawer,
   Toolbar,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const PrimaryAppBar = () => {
   const theme = useTheme();
   const [isSideMenuOpen, setSideMenuOpen] = useState(false);
+  const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
+
+  // close side menu on bigger screen
+  useEffect(() => {
+    if (isBigScreen && isSideMenuOpen) {
+      setSideMenuOpen(false);
+    }
+  }, [isBigScreen]);
 
   return (
     <AppBar
@@ -41,17 +50,18 @@ const PrimaryAppBar = () => {
             <MenuIcon />
           </IconButton>
         </Box>
-        <Drawer
+        <SwipeableDrawer
           anchor="left"
           open={isSideMenuOpen}
           onClose={() => setSideMenuOpen(!isSideMenuOpen)}
+          onOpen={() => setSideMenuOpen(isSideMenuOpen)}
         >
           {[...Array(100)].map((_, i) => (
             <Typography key={i} paragraph>
               {i + 1}
             </Typography>
           ))}
-        </Drawer>
+        </SwipeableDrawer>
         <Link href="/" underline="none" color="inherit">
           <Typography
             variant="h6"
