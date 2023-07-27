@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Box, Drawer, Typography, useMediaQuery } from "@mui/material";
+import { Box, styled, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import DrawerToggle from "../../components/DrawerToggle.tsx";
+import MuiDrawer from "@mui/material/Drawer";
 
 interface Props {
   children: React.ReactNode;
@@ -12,12 +13,34 @@ const PrimaryDraw = ({ children }: Props) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [isPrimaryDrawOpen, setPrimaryDrawOpen] = useState(!isSmallScreen);
 
+  const openedMixin = () => ({
+    overflowX: "hidden",
+  });
+
+  const closedMixin = () => ({
+    overflowX: "hidden",
+    width: theme.primaryDraw.closedWidth,
+  });
+
   useEffect(() => {
     setPrimaryDrawOpen(!isSmallScreen);
   }, [isSmallScreen]);
 
+  const CustomDrawer = styled(
+    MuiDrawer,
+    {},
+  )(({ theme, open }) => {
+    return {
+      width: theme.primaryDraw.width,
+      whiteSpace: "nowrap",
+      boxSizing: "border-box",
+      ...(open && { ...openedMixin(), "& .MuiDrawer-paper": openedMixin() }),
+      ...(!open && { ...openedMixin(), "& .MuiDrawer-paper": closedMixin() }),
+    };
+  });
+
   return (
-    <Drawer
+    <CustomDrawer
       open={isPrimaryDrawOpen}
       variant={isSmallScreen ? "temporary" : "permanent"}
       PaperProps={{
@@ -38,15 +61,14 @@ const PrimaryDraw = ({ children }: Props) => {
             width: isPrimaryDrawOpen ? "auto" : "100%",
           }}
         >
-          <DrawerToggle />
-          {[...Array(25)].map((_, i) => (
-            <Typography key={i} paragraph>
-              {i + 1} and some other text.
-            </Typography>
-          ))}
+          <DrawerToggle
+            isOpen={isPrimaryDrawOpen}
+            handleDrawerToggle={() => setPrimaryDrawOpen(!isPrimaryDrawOpen)}
+          />
+          {children}
         </Box>
       </Box>
-    </Drawer>
+    </CustomDrawer>
   );
 };
 

@@ -1,18 +1,23 @@
 import { Box, IconButton } from "@mui/material";
-import { ChevronLeft } from "@mui/icons-material";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
-const DrawerToggle = () => {
+interface Props {
+  isOpen: boolean;
+  handleDrawerToggle: () => void;
+}
+
+const DrawerToggle = ({ isOpen, handleDrawerToggle }: Props) => {
   return (
     <Box
       sx={{
         height: "50px",
         display: "flex",
-        justifyContent: "center",
         alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <IconButton>
-        <ChevronLeft />
+      <IconButton onClick={handleDrawerToggle}>
+        {isOpen ? <ChevronLeft /> : <ChevronRight />}
       </IconButton>
     </Box>
   );

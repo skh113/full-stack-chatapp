@@ -1,4 +1,4 @@
-import { Box, CssBaseline } from "@mui/material";
+import { Box, CssBaseline, Typography } from "@mui/material";
 import PrimaryAppBar from "./templates/PrimaryAppBar.tsx";
 import PrimaryDraw from "./templates/PrimaryDraw.tsx";
 
@@ -8,7 +8,11 @@ const Home = () => {
       <CssBaseline />
       <PrimaryAppBar />
       <PrimaryDraw>
-        <h2>hey</h2>
+        {[...Array(25)].map((_, i) => (
+          <Typography key={i} paragraph>
+            {i + 1}
+          </Typography>
+        ))}
       </PrimaryDraw>
     </Box>
   );
