@@ -29,7 +29,7 @@ const PrimaryAppBar = () => {
       sx={{
         zIndex: (theme) => theme.zIndex.drawer + 2,
         backgroundColor: theme.palette.background.default,
-        borderBottom: `3px solid ${theme.palette.divider}`,
+        borderBottom: `${theme.primaryAppBar.borderBottom} ${theme.palette.divider}`,
       }}
     >
       <Toolbar

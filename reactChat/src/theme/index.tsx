@@ -5,24 +5,39 @@ declare module "@mui/material/styles" {
   interface Theme {
     primaryAppBar: {
       height: number;
+      borderBottom: string;
     };
 
     primaryDraw: {
       width: number;
       closedWidth: number;
+    };
+
+    secondaryDraw: {
+      width: number;
+      borderBottom: string;
     };
   }
   interface ThemeOptions {
     primaryAppBar: {
       height: number;
+      borderBottom: string;
     };
 
     primaryDraw: {
       width: number;
       closedWidth: number;
     };
+
+    secondaryDraw: {
+      width: number;
+      borderBottom: string;
+    };
   }
 }
+
+const defaultWidth = 240;
+const defaultBorderBottom = "3px solid";
 
 const createMuiTheme = () => {
   let theme = createTheme({
@@ -44,11 +59,17 @@ const createMuiTheme = () => {
 
     primaryAppBar: {
       height: 50,
+      borderBottom: defaultBorderBottom,
     },
 
     primaryDraw: {
-      width: 240,
+      width: defaultWidth,
       closedWidth: 70,
+    },
+
+    secondaryDraw: {
+      width: defaultWidth,
+      borderBottom: defaultBorderBottom,
     },
 
     components: {

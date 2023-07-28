@@ -26,6 +26,7 @@ const PrimaryDraw = ({ children }: Props) => {
     setPrimaryDrawOpen(!isSmallScreen);
   }, [isSmallScreen]);
 
+  // FIXME
   const CustomDrawer = styled(
     MuiDrawer,
     {},
