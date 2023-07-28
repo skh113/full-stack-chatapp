@@ -3,8 +3,12 @@ import PrimaryAppBar from "./templates/PrimaryAppBar.tsx";
 import PrimaryDraw from "./templates/PrimaryDraw.tsx";
 import SecondaryDraw from "./templates/SecondaryDraw.tsx";
 import MainContent from "./templates/MainContent.tsx";
+import useCategory from "../hooks/useCategory.ts";
 
 const Home = () => {
+  const { data, error } = useCategory();
+  console.log(data);
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -18,10 +22,8 @@ const Home = () => {
         ))}
       </PrimaryDraw>
       <SecondaryDraw>
-        {[...Array(15)].map((_, i) => (
-          <Typography key={i} paragraph>
-            {i + 1}
-          </Typography>
+        {data.map((category) => (
+          <Typography>{category.name}</Typography>
         ))}
       </SecondaryDraw>
       <MainContent>
